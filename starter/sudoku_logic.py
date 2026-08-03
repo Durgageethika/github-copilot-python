@@ -39,14 +39,59 @@ def fill_board(board):
                 return False
     return True
 
+def count_solutions(board, limit=2):
+    board_copy = deep_copy(board)
+    count = 0
+
+    def solve():
+        nonlocal count
+        if count >= limit:
+            return
+        # find first empty cell
+        for i in range(SIZE):
+            for j in range(SIZE):
+                if board_copy[i][j] == EMPTY:
+                    row, col = i, j
+                    break
+            else:
+                continue
+            break
+        else:
+            count += 1
+            return
+
+        for num in range(1, SIZE + 1):
+            if is_safe(board_copy, row, col, num):
+                board_copy[row][col] = num
+                solve()
+                board_copy[row][col] = EMPTY
+                if count >= limit:
+                    return
+
+    solve()
+    return count
+
 def remove_cells(board, clues):
-    attempts = SIZE * SIZE - clues
-    while attempts > 0:
-        row = random.randrange(SIZE)
-        col = random.randrange(SIZE)
-        if board[row][col] != EMPTY:
+    removals = SIZE * SIZE - clues
+    positions = [(r, c) for r in range(SIZE) for c in range(SIZE)]
+    random.shuffle(positions)
+    removed = 0
+    made_progress = True
+    while removed < removals and made_progress:
+        made_progress = False
+        for row, col in positions:
+            if removed >= removals:
+                break
+            if board[row][col] == EMPTY:
+                continue
+            backup = board[row][col]
             board[row][col] = EMPTY
-            attempts -= 1
+            sols = count_solutions(board, limit=2)
+            if sols == 1:
+                removed += 1
+                made_progress = True
+            else:
+                board[row][col] = backup
 
 def generate_puzzle(clues=35):
     board = create_empty_board()

@@ -1,0 +1,18 @@
+[
+  {
+    "title":"Testing",
+    "prompt":"Create pytest tests for Flask endpoints."
+  },
+  {
+    "title":"Unique Solution",
+    "prompt":"Modify Sudoku generation so each puzzle has exactly one unique solution."
+  },
+  {
+    "title":"Leaderboard",
+    "prompt":"Store the Top 10 Sudoku scores using browser localStorage."
+  },
+  {
+    "title":"Styling",
+    "prompt":"Alternate the colours of each 3x3 Sudoku box and keep the layout responsive."
+  }
+]
