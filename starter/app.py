@@ -70,5 +70,23 @@ def get_hint():
 
     return jsonify({"message": "Puzzle already complete"})
 
+@app.route('/validate', methods=['POST'])
+def validate_move():
+
+    data = request.json
+
+    row = data.get("row")
+    col = data.get("col")
+    value = data.get("value")
+
+    solution = CURRENT.get("solution")
+
+    if solution is None:
+        return jsonify({"error": "No active game"}), 400
+
+    return jsonify({
+        "valid": solution[row][col] == value
+    })
+
 if __name__ == '__main__':
     app.run(debug=True)
